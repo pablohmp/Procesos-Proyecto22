@@ -57,17 +57,25 @@ function ServidorWS() {
             socket.on("colocarBarco", function (nick, nombre, x, y) {
 
                 let user = juego.obtenerUsuario(nick);
+                let tablero = user.tableroPropio;
+                let ship = user.flota[nombre];
                 if (user) {
                     if (user.partida) {
-                         
-                        user.colocarBarco(nombre, x, y);
-                        
-                        let partida = juego.obtenerPartida(user.partida.codigo);
-                        
-                        let res = { nick: nick, barco: nombre, x: x, y: y, colocado: true };
-                        cli.enviarAlRemitente(socket, "barcoColocado", res);
-                        console.log("El Barco " + res.barco + " es colocado en la posición (" + res.x + "," + res.y + ")");
+                        if (tablero.casillasLibres(x, y, ship.tam)) {
+                            user.colocarBarco(nombre, x, y);
 
+                            let partida = juego.obtenerPartida(user.partida.codigo);
+
+                            let res = { nick: nick, barco: nombre, x: x, y: y, colocado: true };
+                            cli.enviarAlRemitente(socket, "barcoColocado", res);
+                            console.log("El Barco " + res.barco + " es colocado en la posición (" + res.x + "," + res.y + ")");
+                            console.log("jamon")
+                        }
+                        else {
+                            console.log("No hay casillas libres para colocar este barco en esta posicion.");
+                            let res = { estado: true };
+                            cli.enviarAlRemitente(socket, "noHayCasillas", res);
+                        }
                     }
                     else {
                         console.log("No se pueden desplegar barcos si no estás dentro de una partida.");
@@ -93,7 +101,7 @@ function ServidorWS() {
                         console.log("Barcos deplegados. Comienza a atacar: " + res.turno);
 
                     }
-                    
+
                 }
 
             });
@@ -101,7 +109,7 @@ function ServidorWS() {
 
                 let user = juego.obtenerUsuario(nick);
                 if (user && user.partida.esJugando()) {
-                    
+
                     let turno = user.partida.turno;
                     console.log("Turno de: " + turno.nick);
                     if (user.nick == turno.nick) {
@@ -155,16 +163,16 @@ function ServidorWS() {
                 //let partida = juego.obtenerPartida(user.partida.codigo);
                 if (!user.partida & !user.partida.fase == "final") {
                     juego.salir(nick);
-                    let res = {nick: nick};
+                    let res = { nick: nick };
                     cli.enviarAlRemitente(socket, "salir", res);
                 }
-                else{
+                else {
                     let rival = user.partida.obtenerRival(nick);
                     let codigoStr = user.partida.codigo.toString();
                     juego.salir(nick);
                     let res = { nick: nick };
                     cli.enviarATodosEnPartida(io, codigoStr, "salir", res);
-                    
+
                 };
 
             });

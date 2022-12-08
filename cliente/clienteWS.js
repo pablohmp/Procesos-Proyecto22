@@ -82,8 +82,9 @@ function ClienteWS() {
         });
         this.socket.on("barcoColocado", function (res) {
             //Pintar gris cuando colocamos
-            if (res.colocado) {
+            if (res.colocado==true) {
                 let barco = tablero.flota[res.barco];
+                console.log("llegara hasta aqui? barcoColocado en cws");
                 tablero.puedesColocarBarco(barco, res.x, res.y, res.desplegados);
                 console.log("El Barco " + res.barco + " es colocado en la posición (" + res.x + "," + res.y + ")");
                 iu.mostrarModal("El Barco " + res.barco + " es colocado en la posición (" + res.x + "," + res.y + ")");
@@ -91,9 +92,9 @@ function ClienteWS() {
 
 
         });
-        this.socket.on("barcoYaColocado", function (res) {
-            console.log("Ya existe un barco en la posición (" + res.posicion+")");
-            iu.mostrarModal("Ya existe un barco en la posición (" + res.posicion+")");
+        this.socket.on("noHayCasillas", function (res) {
+            console.log("No hay suficientes casillas libres para colocar este barco en esa posicion");
+            iu.mostrarModal("No hay suficientes casillas libres para colocar este barco en esa posicion");
         });
 
         this.socket.on("noColocar", function () {
@@ -101,8 +102,8 @@ function ClienteWS() {
             iu.mostrarModal("Entra en una partida antes de colocar un barco.");
         });
         this.socket.on("noDispare", function () {
-            console.log("Entra en una partida antes de disparar.");
-            iu.mostrarModal("Entra en una partida antes de disparar.");
+            console.log("No se puede Disparar aun.");
+            iu.mostrarModal("No se puede Disparar aun.");
         });
         this.socket.on("aJugar", function (res) {
             iu.mostrarModal("¡A Jugar!. Empieza: " + res.turno);
