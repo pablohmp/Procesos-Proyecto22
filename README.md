@@ -1,6 +1,7 @@
 # Proyecto22
 Proyecto de la asignatura Procesos de Ingeniería del Software curso 22-23
-Escuela Superior de Ingeniería Informática de Albacete - Universidad de Castilla-La Mancha
+Escuela Superior de Ingeniería Informática de Albacete - Universidad de Castilla-La Mancha.
+
 La aplicacion desplegada la podemos encontrar en https://proyecto22-ci-4yjkn464wa-ew.a.run.app/
 
 ## Descripción
