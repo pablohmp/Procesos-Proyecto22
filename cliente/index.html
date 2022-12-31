@@ -25,7 +25,19 @@
 		<link href="./cliente/css/styles.css" rel="stylesheet" media="all" />
 	</head>
 
-<body>
+<body 
+style="
+	background-image:url(https://openseauserdata.com/files/ac6e212012432c1da9ce9022ed6112c4.gif);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center fixed;
+	background-attachment: fixed;
+"
+>
+<audio controls autoplay loop>
+	<source src="cliente\img\Battleship.mp3" type="audio/mpeg">
+  Tu buscador no soporta elementos de audio
+  </audio> 
 
 	<div class="container">
 		<div class="row">
@@ -45,7 +57,7 @@
 		</div>
 	</div>
 	</div>
-	<div class="row" id="tablero" style="display: none;">
+	<div class="row" id="tablero" style="display: none;" >
 		<div class="col-4">
 			<div id="roster-sidebar">
 				<h2>Barcos</h2>
@@ -57,7 +69,7 @@
 			</div>
 			<div id="stats-sidebar">
 			</div>
-			<div class="col-8">
+			<div class="col-8" style="display: flex;">
 				<div class="grid-container">
 					<div class="card"  style=" background-color: #EEEEEE;margin: auto auto; width: 460px">
 						<div class="card-body">
