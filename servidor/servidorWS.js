@@ -69,7 +69,7 @@ function ServidorWS() {
                             let res = { nick: nick, barco: nombre, x: x, y: y, colocado: true };
                             cli.enviarAlRemitente(socket, "barcoColocado", res);
                             console.log("El Barco " + res.barco + " es colocado en la posición (" + res.x + "," + res.y + ")");
-                            console.log("jamon")
+                            //console.log("jamon")
                         }
                         else {
                             console.log("No hay casillas libres para colocar este barco en esta posicion.");
