@@ -376,6 +376,9 @@ function Tablero(size) {
 	this.ponerAgua = function (x, y) {
 		this.casillas[x][y].contiene = new Agua();
 	}
+	this.ponerEscombros = function (x, y) {
+		this.casillas[x][y].contiene = new Escombros();
+	}
 	this.marcarEstado = function (estado, x, y) {
 		this.casillas[x][y].contiene.estado = estado;
 	}
@@ -400,6 +403,9 @@ function Barco(nombre, tam) {
 	this.esAgua = function () {
 		return false
 	}
+	this.esEscombros = function () {
+		return false
+	}
 	this.meDisparan = function (tablero, x, y) {
 		this.disparos++;
 
@@ -411,7 +417,7 @@ function Barco(nombre, tam) {
 			this.estado = "hundido";
 			console.log("Hundido");
 		}
-		tablero.ponerAgua(x, y);
+		tablero.ponerEscombros(x, y);
 
 		return this.obtenerEstado();
 	}
@@ -426,12 +432,33 @@ function Agua() {
 	this.esAgua = function () {
 		return true
 	}
+	this.esEscombros = function () {
+		return false
+	}
 	this.meDisparan = function () {
 		console.log("Agua");
 		return this.obtenerEstado();
 	}
 	this.obtenerEstado = function () {
 		return "agua";
+	}
+
+}
+
+function Escombros() {
+	this.nombre = "Escombros";
+	this.esAgua = function () {
+		return false
+	}
+	this.esEscombros = function () {
+		return true
+	}
+	this.meDisparan = function () {
+		console.log("Escombros");
+		return this.obtenerEstado();
+	}
+	this.obtenerEstado = function () {
+		return "escombros";
 	}
 
 }

@@ -93,7 +93,10 @@ function Tablero() {
 
         if (estado == 'agua') {
             this.updateCell(x, y, 'agua', targetPlayer);
-        } else if (estado == 'tocado') {
+        } else if (estado == 'escombros') {
+            //no pongo nada porque quiero que lo ignore
+        } 
+        else if (estado == 'tocado') {
             this.updateCell(x, y, 'tocado', targetPlayer);
 
         } else {

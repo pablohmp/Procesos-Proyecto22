@@ -139,17 +139,23 @@ function ServidorWS() {
                         let partida = juego.obtenerPartida(user.partida.codigo);
 
                         //Timer nuevo
-                        partida.restartTimer();
+                        
 
                         let codigoStr = partida.codigo.toString();
                         let estado = user.obtenerEstadoMarcado(x, y);
                         if (estado == 'agua') {
+                            partida.restartTimer();
                             rival = user.partida.obtenerRival(nick);
                             let res = { atacante: nick, atacado: rival.nick, turno: turno.nick, estado: 'agua', x: x, y: y }
                             //cli.enviarAlRemitente(socket, "disparo", res);
                             cli.enviarATodosEnPartida(io, codigoStr, "disparo", res);
+                        }else if (estado == 'escombros') {
+                            let res = { atacante: nick, turno: turno.nick, estado: 'escombros', x: x, y: y };
+                            //cli.enviarAlRemitente(socket, "disparo", res);
+                            cli.enviarATodosEnPartida(io, codigoStr, "disparo", res);
                         }
                         else {
+                            partida.restartTimer();
                             if (estado == 'tocado') {
                                 let res = { atacante: nick, turno: turno.nick, estado: 'tocado', x: x, y: y };
                                 cli.enviarATodosEnPartida(io, codigoStr, "disparo", res);

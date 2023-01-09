@@ -146,21 +146,32 @@ function ClienteWS() {
             }
             let estado = undefined;
             //Timer
-            timeLeft = 60;
+            
             switch (res.estado) {
                 case "agua":
+                    timeLeft = 60;
                     estado = "AGUA"
                     res.turno = res.atacado;
+                    console.log("Disparo de " + res.atacante + ": " + estado);
+                    iu.mostrarModal("Disparo de " + res.atacante + ": " + estado + "<br/>Turno de: " + res.turno);
                     break;
                 case "tocado":
+                    timeLeft = 60;
                     estado = "TOCADO"
+                    console.log("Disparo de " + res.atacante + ": " + estado);
+                    iu.mostrarModal("Disparo de " + res.atacante + ": " + estado + "<br/>Turno de: " + res.turno);
                     break;
                 case "hundido":
+                    timeLeft = 60;
                     estado = "HUNDIDO"
+                    console.log("Disparo de " + res.atacante + ": " + estado);
+                    iu.mostrarModal("Disparo de " + res.atacante + ": " + estado + "<br/>Turno de: " + res.turno);
+                    break;
+                case "escombros":
+                    estado = "TOCADO"
                     break;
             }
-            console.log("Disparo de " + res.atacante + ": " + estado);
-            iu.mostrarModal("Disparo de " + res.atacante + ": " + estado + "<br/>Turno de: " + res.turno);
+            
         });
         //Timer Nuevo
         this.socket.on("timerEnd", function (res) {
