@@ -15,7 +15,7 @@ function ControlWeb() {
         cadena = cadena + '</div></div>'
 
 
-        $("#agregarUsuario").append(cadena);  
+        $("#agregarUsuario").append(cadena);
 
         $("#btnAU").on("click", function (e) {
             if ($('#usr').val() === '' || $('#usr').val().length > 6) {
@@ -32,13 +32,13 @@ function ControlWeb() {
     }
     this.mostrarComprobarCookie = function () {
         $('#mCC').remove();
-        
+
         if ($.cookie("nick")) {
             rest.nick = $.cookie("nick");
-            rest.comprobarUsuario(); 
+            rest.comprobarUsuario();
         }
         else {
-            this.mostrarAgregarUsuario();     
+            this.mostrarAgregarUsuario();
         }
     }
 
@@ -49,16 +49,16 @@ function ControlWeb() {
         cadena = cadena + '<div class="card bg-light" style=" margin: auto auto" id="card-bienvenido">';
         cadena = cadena + '<div class="card-body">';
         cadena = cadena + '<h1>Bienvenide ';
-        rest.nick = $.cookie("nick"); 
+        rest.nick = $.cookie("nick");
         cadena = cadena + rest.nick;
         cadena = cadena + "" + '</h1>';
         cadena = cadena + '<div id="codigo"></div>';
         cadena = cadena + '<button id="btnCC" class="btn btn-primary mb-2 mr-sm-2" style="margin-left:15px">Salir</button>';
         cadena = cadena + '</div></div>';
         cadena = cadena + '</div></div>';
-        
+
         $("#agregarUsuario").append(cadena);
-       
+
         this.mostrarCrearPartida();
         rest.obtenerListaPartidasDisponibles();
 
@@ -96,9 +96,9 @@ function ControlWeb() {
     }
     this.finPartida = function () {
         $("#codigo").remove();
-        this.mostrarHome();  
+        this.mostrarHome();
     }
-   
+
 
     this.mostrarAbandonarPartida = function (codigo) {
         $("#mAP").remove()
@@ -139,39 +139,39 @@ function ControlWeb() {
         $('#listaPartidas').append(cadena);
     }
 
-    this.mostrarListaDePartidasDisponibles=function(lista){
-		$('#mLPD').remove();
-		let cadena="<div class='row' id='mLPD'>";
-		cadena=cadena+"<div class='col'>";
+    this.mostrarListaDePartidasDisponibles = function (lista) {
+        $('#mLPD').remove();
+        let cadena = "<div class='row' id='mLPD'>";
+        cadena = cadena + "<div class='col'>";
         cadena = cadena + '<div class="card bg-light" style=" margin: auto auto" id="card-bienvenido">';
         cadena = cadena + '<div class="card-body">';
-		cadena=cadena+"<h2>Lista de partidas disponibles</h2>";
-		cadena=cadena+'<ul class="list-group">';
-		for(i=0;i<lista.length;i++){
-		    cadena = cadena+'<li class="list-group-item"><a href="#" value="'+lista[i].codigo+'"> Nick propietario: '+lista[i].owner+'</a></li>';
+        cadena = cadena + "<h2>Lista de partidas disponibles</h2>";
+        cadena = cadena + '<ul class="list-group">';
+        for (i = 0; i < lista.length; i++) {
+            cadena = cadena + '<li class="list-group-item"><a href="#" value="' + lista[i].codigo + '"> Nick propietario: ' + lista[i].owner + '</a></li>';
         }
-		cadena=cadena+"</ul>";
-		cadena=cadena+"</div></div>"
-        cadena=cadena+"</div></div>"
-		$('#listaPartidasDisp').append(cadena);
+        cadena = cadena + "</ul>";
+        cadena = cadena + "</div></div>"
+        cadena = cadena + "</div></div>"
+        $('#listaPartidasDisp').append(cadena);
 
-		$(".list-group a").click(function(){
-	        codigo=$(this).attr("value");
-   	
-	        if (codigo){
-	            $('#mLPD').remove();
-	            $('#mCP').remove();
+        $(".list-group a").click(function () {
+            codigo = $(this).attr("value");
+
+            if (codigo) {
+                $('#mLPD').remove();
+                $('#mCP').remove();
                 cws.unirseAPartida(codigo);
-	        }
-	    });		
-	}
+            }
+        });
+    }
 
     this.mostrarModal = function (msg) {
         $('#mM').remove();
         var cadena = "<p id='mM'>" + msg + "</p>";
         $('#contenidoModal').append(cadena);
         $('#miModal').modal("show");
-       
+
     }
 
 

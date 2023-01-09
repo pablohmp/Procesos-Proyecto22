@@ -1,9 +1,13 @@
+//Timer
+var time;
+var timeLeft = 60;
 
 function ClienteWS() {
 
     this.socket = io();
     this.socket;
     this.codigo;
+
 
     this.conectar = function () {
         this.socket = io();
@@ -35,6 +39,8 @@ function ClienteWS() {
     //gestion de peticiones
     this.servidorWS = function () {
         let cli = this;
+
+
         this.socket.on("partidaCreada", function (data) {
             if (data.codigo != -1) {
                 console.log("El usuario " + rest.nick + " crea la partida de codigo: " + data.codigo);
@@ -69,7 +75,7 @@ function ClienteWS() {
         });
 
         this.socket.on("aDesplegar", function (res) {
-            tablero.flota = res.flota; 
+            tablero.flota = res.flota;
             tablero.mostrarTablero(true);
             console.log("Comienza a desplegar la flota en el tablero.");
             iu.mostrarModal("Comienza a desplegar la flota en el tablero.");
@@ -82,7 +88,7 @@ function ClienteWS() {
         });
         this.socket.on("barcoColocado", function (res) {
             //Pintar gris cuando colocamos
-            if (res.colocado==true) {
+            if (res.colocado == true) {
                 let barco = tablero.flota[res.barco];
                 //console.log("llegara hasta aqui? barcoColocado en cws");
                 tablero.puedesColocarBarco(barco, res.x, res.y, res.desplegados);
@@ -108,6 +114,19 @@ function ClienteWS() {
         this.socket.on("aJugar", function (res) {
             iu.mostrarModal("¡A Jugar!. Empieza: " + res.turno);
             console.log("¡A Jugar!. Empieza: " + res.turno);
+
+            //Timer
+            function timer() {
+                timeLeft = timeLeft - 1;
+                if (this.timeLeft >= 0) {
+                    $('#timer').html(timeLeft);
+                } else {
+                    timeLeft = 60;
+                }
+            }
+
+            time = setInterval(() => timer(), 1000);
+            timer();
         });
 
         this.socket.on("noTodosDesplegados", function () {
@@ -126,6 +145,8 @@ function ClienteWS() {
                 tablero.puedesDisparar(res.estado, res.x, res.y, 'human-player');
             }
             let estado = undefined;
+            //Timer
+            timeLeft = 60;
             switch (res.estado) {
                 case "agua":
                     estado = "AGUA"
@@ -141,6 +162,11 @@ function ClienteWS() {
             console.log("Disparo de " + res.atacante + ": " + estado);
             iu.mostrarModal("Disparo de " + res.atacante + ": " + estado + "<br/>Turno de: " + res.turno);
         });
+        //Timer Nuevo
+        this.socket.on("timerEnd", function (res) {
+            console.log("Se ha sobrepasado el tiempo, es el turno de " + res.turno);
+            iu.mostrarModal("Se ha sobrepasado el tiempo, es el turno de " + res.turno);
+        });
 
         this.socket.on("noEsTuTurno", function (res) {
             console.log("Aun estamos en el turno de " + res.turno);
@@ -149,6 +175,8 @@ function ClienteWS() {
 
         this.socket.on("salir", function (res) {
             tablero.mostrarTablero(false);
+            //Timer
+            clearInterval(time);
             if (res.nick == rest.nick) {
                 console.log("Has salido del juego");
                 iu.mostrarModal("Has salido del juego");
@@ -160,6 +188,9 @@ function ClienteWS() {
         });
 
         this.socket.on("finPartida", function (res) {
+            //Timer
+            clearInterval(time);
+
             tablero.mostrarTablero(false);
             console.log("Fin de la partida.");
             console.log("Ha ganado: ", +res.turno);

@@ -196,6 +196,39 @@ function Partida(codigo, user) {
 	this.jugadores = [];
 	this.fase = 'inicial';
 	this.maxJugadores = 2;
+	//Timer
+	this.timer;
+	this.timeLeft = 60;
+
+	this.startTimer = function () {
+		this.timer = setInterval(() => this.updateTimer(), 1000);
+		this.updateTimer();
+	}
+
+	this.restartTimer = function () {
+		this.timeLeft = 60;
+	}
+
+	this.updateTimer = function () {
+		this.timeLeft = this.timeLeft - 1;
+		/* if (this.timeLeft >= 0) {
+			//$('#timer').html(this.timeLeft);
+			//console.log(this.timeLeft);
+		} */
+	}
+	this.endTimer = function () {
+		clearInterval(this.timer);
+	}
+
+	this.checkTimer = function () {
+		if (this.timeLeft == 0 || this.timeLeft < 0) {
+			return true;
+		}
+		return false;
+	}
+
+
+
 
 	this.agregarJugador = function (usr) {
 		let res = this.codigo;
@@ -402,6 +435,7 @@ function Agua() {
 	}
 
 }
+
 
 function Inicial() {
 	this.nombre = "inicial";

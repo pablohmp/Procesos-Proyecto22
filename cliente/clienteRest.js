@@ -19,16 +19,15 @@ function ClienteRest() {
             }
         });
     }
-
     this.comprobarUsuario = function () {
         $.getJSON("/comprobarUsuario/" + this.nick, function (data) {
             if (data.nick != -1) {
-                console.log("Usuario "+data.nick+" activo.");
+                console.log("Usuario " + data.nick + " activo.");
                 cws.conectar();
                 iu.mostrarHome();
             }
             else {
-                console.log("Usuario "+data.nick+" inactivo.");
+                console.log("Usuario " + data.nick + " inactivo.");
                 iu.mostrarAgregarUsuario()
             }
         });
@@ -90,7 +89,7 @@ function ClienteRest() {
 
     this.abandonarPartida = function (codigo) {
         let nick = this.nick;
-        $.getJSON("/abandonarPartida/" + nick + "/" + codigo, function (data) {       
+        $.getJSON("/abandonarPartida/" + nick + "/" + codigo, function (data) {
             iu.mostrarHome();
         });
     }

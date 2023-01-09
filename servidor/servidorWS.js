@@ -14,6 +14,9 @@ function ServidorWS() {
     //gestionar peticiones
     this.lanzarServidorWS = function (io, juego) {
         let cli = this;
+        this.checker;
+        //Timer Nuevo
+        /* var timer;  */
         io.on('connection', (socket) => {
             console.log('Usuario conectado');
 
@@ -49,10 +52,14 @@ function ServidorWS() {
 
                 res = { nick: nick, codigo: partida.codigo };
                 cli.enviarATodosEnPartida(io, codigoStr, "userAbandona", res);
+                //Timer
+                partida.endTimer();
+                clearInterval(this.checker);
                 juego.abandonarPartida(nick, codigo);
 
 
             });
+
 
             socket.on("colocarBarco", function (nick, nombre, x, y) {
 
@@ -90,6 +97,7 @@ function ServidorWS() {
             socket.on("barcosDesplegados", function (nick) {
 
                 let user = juego.obtenerUsuario(nick);
+                let partida = juego.obtenerPartida(user.partida.codigo);
                 if (user) {
                     user.barcosDesplegados();
                     console.log("Fase " + user.partida.fase);
@@ -100,8 +108,21 @@ function ServidorWS() {
 
                         console.log("Barcos deplegados. Comienza a atacar: " + res.turno);
 
-                    }
+                        //Timer Nuevo
+                        partida.startTimer();
+                        this.checker = setInterval(
+                            function checking() {
+                                if (partida.checkTimer()) {
+                                    partida.cambiarTurno(partida.turno.nick);
+                                    let res = { turno: partida.turno.nick };
+                                    cli.enviarAlRemitente(io, "timerEnd", res);
+                                    partida.restartTimer();
+                                    console.log("Turno de: " + partida.turno.nick);
 
+                                }
+                            }
+                            , 900);
+                    }
                 }
 
             });
@@ -112,10 +133,14 @@ function ServidorWS() {
 
                     let turno = user.partida.turno;
                     console.log("Turno de: " + turno.nick);
-                    if (user.nick == turno.nick) {
 
+                    if (user.nick == turno.nick) {
                         user.disparar(x, y);
                         let partida = juego.obtenerPartida(user.partida.codigo);
+
+                        //Timer nuevo
+                        partida.restartTimer();
+
                         let codigoStr = partida.codigo.toString();
                         let estado = user.obtenerEstadoMarcado(x, y);
                         if (estado == 'agua') {
@@ -139,7 +164,13 @@ function ServidorWS() {
 
                         if (partida.esFinal()) {
                             let res = { turno: turno.nick };
+                            //Timer Nuevo se cierra al terminar la partida
+                            partida.endTimer();
+                            clearInterval(this.checker);
+
+
                             cli.enviarATodosEnPartida(io, codigoStr, "finPartida", res);
+
                         }
 
                     }
