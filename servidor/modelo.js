@@ -12,6 +12,9 @@ function Juego() {
 			this.usuarios[nick] = new Usuario(nick, this)
 			res = { "nick": nick };
 			console.log("Nuevo usuario: " + nick);
+			this.insertarLog({ "operacion": "inicioSesion", "usuario": nick, "fecha": Date() }, function () {
+			console.log("Registro de log(iniciar sesion) insertado");
+			});
 		}
 		return res;
 	}
@@ -48,6 +51,11 @@ function Juego() {
 
 	this.crearPartida = function (user) {
 		let codigo = Date.now();
+
+		this.insertarLog({ "operacion": "crearPartida", "propietario": user.nick, "codigo": codigo, "fecha": Date() }, function () {
+		console.log("Registro de log(crear partida) insertado");
+		});
+
 		this.partidas[codigo] = new Partida(codigo, user);
 		return codigo;
 	}
@@ -56,6 +64,9 @@ function Juego() {
 		let res = -1;
 		if (this.partidas[codigo]) {
 			res = this.partidas[codigo].agregarJugador(user);
+			this.insertarLog({ "operacion": "unirsePartida", "usuario": user.nick, "codigoPartida": codigo, "fecha": Date() }, function () {
+			console.log("Registro de log(unirse a partida) insertado");
+			});
 		} else {
 			console.log("La partida no existe");
 		}
@@ -77,6 +88,9 @@ function Juego() {
 	this.salir = function (nick) {
 		let res = { "codigo": -1 };
 		this.eliminarUsuario(nick);
+		this.insertarLog({ "operacion": "finSesion", "usuario": nick, "fecha": Date() }, function () {
+		console.log("Registro de log(salir) insertado");
+		});
 		for (let key in this.partidas) {
 			if (this.partidas[key].owner.nick == nick) {
 				res = { "codigo": this.partidas[key].codigo };
@@ -86,6 +100,9 @@ function Juego() {
 		return res;
 	}
 	this.abandonarPartida = function (nick, codigo) {
+		this.insertarLog({ "operacion": "abandonarPartida", "usuario": nick, "codigo": codigo, "fecha": Date() }, function () {
+		console.log("Registro de log(abandonar) insertado");
+		});
 		return this.eliminarPartida(codigo);
 	}
 
@@ -107,6 +124,15 @@ function Juego() {
 			}
 		}
 		return lista;
+	}
+
+	this.insertarLog = function (log, callback) {
+		if (!this.test) {
+			this.cad.insertarLog(log, callback);
+		}
+	}
+	this.obtenerLogs = function (callback) {
+		this.cad.obtenerLogs(callback);
 	}
 }
 
@@ -190,6 +216,17 @@ function Usuario(nick, juego) {
 	}
 	this.obtenerFlota = function () {
 		return this.flota;
+	}
+
+	this.logAbandonarPartida = function (jugador, codigo) {
+		this.juego.insertarLog({ "operacion": "abandonarPartida", "usuario": jugador.nick, "codigo": codigo, "fecha": Date() }, function () {
+			console.log("Registro de log(abandonar) insertado");
+		});
+	}
+	this.logFinalizarPartida = function (perdedor, ganador, codigo) {
+		this.juego.insertarLog({ "operacion": "finalizarPartida", "perdedor": perdedor, "ganador": ganador, "codigo": codigo, "fecha": Date() }, function () {
+			console.log("Registro de log(finalizarPartida) insertado");
+		});
 	}
 
 }
@@ -330,6 +367,7 @@ function Partida(codigo, user) {
 			this.fase = "final";
 			console.log("Fin de la partida.");
 			console.log("Ganador: " + this.turno.nick);
+			jugador.logFinalizarPartida(jugador.nick, this.turno.nick, this.codigo);
 		}
 	}
 

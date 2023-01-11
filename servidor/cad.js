@@ -7,16 +7,48 @@ function Cad() {
 
     //logs
     this.insertarLog = function (log, callback) {
-        insertar(this.logs, partida, callback);
+        insertar(this.logs, log, callback);
+    }
+
+    this.insertarPartida = function (partida, callback) {
+        insertar(this.partidas, partida, callback);
+    }
+
+    this.insertarUsuario = function (usuario, callback) {
+        insertar(this.usuarios, usuario, callback);
     }
 
     this.obtenerLogs = function (callback) {
         obtenerTodos(this.logs, callback);
     }
 
+    this.obtenerUsuarios = function (callback) {
+        obtenerTodos(this.usuarios, callback);
+    }
+
+    this.obtenerOCrearUsuario = function (criterio, callback) {
+        obtenerOCrear(this.usuarios, criterio, callback);
+    }
+
+    this.obtenerTodos = function (coleccion, callback) {
+        coleccion.find().toArray(function (error, col) {
+            callback(col);
+        });
+    }
+
+    function obtenerOCrear(coleccion, criterio, callback) {
+        coleccion.findOneAndUpdate(criterio, { $set: criterio }, { upsert: true }, function (err, doc) {
+            if (err) { throw err; }
+            else {
+                console.log("Updated");
+                callback(doc);
+            }
+        });
+    }
+
     //Partidas
     //Usuarios
-//a
+    //a
     //Productos
 
     function insertar(coleccion, elemento, callback) {
@@ -28,12 +60,6 @@ function Cad() {
                 console.log("Nuevo elemento creado");
                 callback(elemento);
             }
-        });
-    };
-
-    function obtenerTodos(coleccion, callback) {
-        coleccion.find().toArray(function (error, col) {
-            callback(col);
         });
     };
 
