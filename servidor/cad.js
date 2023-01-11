@@ -16,7 +16,7 @@ function Cad() {
 
     //Partidas
     //Usuarios
-
+//a
     //Productos
 
     function insertar(coleccion, elemento, callback) {
