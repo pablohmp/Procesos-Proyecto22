@@ -46,11 +46,6 @@ function Cad() {
         });
     }
 
-    //Partidas
-    //Usuarios
-    //a
-    //Productos
-
     function insertar(coleccion, elemento, callback) {
         coleccion.insertOne(elemento, function (err, result) {
             if (err) {
