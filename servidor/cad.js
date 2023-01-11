@@ -3,6 +3,7 @@ var ObjectID = require("mongodb").ObjectID;
 
 function Cad() {
     this.logs;
+    this.usuarios;
 
     //logs
     this.insertarLog = function (log, callback) {
