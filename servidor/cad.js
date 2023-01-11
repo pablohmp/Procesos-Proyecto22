@@ -60,7 +60,7 @@ function Cad() {
 
     this.conectar = function () {
         let cad = this;
-        mongo.connect("mongodb+srv://batalla:batalla@cluster0.ngj1cva.mongodb.net/?retryWrites=true&w=majority", { useUnifiedTopology: true }, function (err, database) {
+        mongo.connect("mongodb+srv://admin:admin@cluster0.ngj1cva.mongodb.net/?retryWrites=true&w=majority", { useUnifiedTopology: true }, function (err, database) {
             if (!err) {
                 console.log("Conectado a MongoDB Atlas");
                 database.db("batalla").collection("logs", function (err, col) {
