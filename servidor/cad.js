@@ -78,7 +78,7 @@ function Cad() {
             }
         });
     }
-    //this.conectar();
+    this.conectar();
 }
 
 module.exports.Cad = Cad;
