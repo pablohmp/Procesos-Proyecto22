@@ -1,3 +1,5 @@
+let cad = require('./cad.js');
+
 function Juego() {
 	this.partidas = [];
 	this.usuarios = {};  //array asociativo [clave][objeto]
