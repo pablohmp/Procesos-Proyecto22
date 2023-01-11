@@ -3,7 +3,7 @@
     "cookie-session": "^2.0.0",
     "express": "^3.4.4",
     "jasmine-node": "1.16.0",
-    "mongodb": "^4.13.0",
+    "mongodb": "^3.7.3",
     "passport": "^0.5.3",
     "passport-google-oauth": "^2.0.0",
     "passport-google-oauth20": "^2.0.0",
