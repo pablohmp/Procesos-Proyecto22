@@ -10,7 +10,11 @@ function ControlWeb() {
         cadena = cadena + '<div class="card-body">';
         cadena = cadena + '<h2>Inicio de sesión</h2>';
         cadena = cadena + '<input type="text" class="form-control mb-2 mr-sm-2" id="usr" placeholder="Introduce tu nick (max 6 letras)" required>';
-        cadena = cadena + '<button id="btnAU" class="btn btn-primary mb-2 mr-sm-2">Entrar</button>';
+        //cadena = cadena + '<button id="btnAU" class="btn btn-primary mb-2 mr-sm-2">Entrar</button>';
+        
+        cadena = cadena + '<button id="btnAU" class="btn btn-primary mb-2 mr-sm-2">Iniciar Sesión</button>';
+        cadena = cadena + '<a href="/auth/google" class="btn btn-primary mb-2 mr-sm-2">Accede con Google</a>';
+        
         cadena = cadena + '<div id="nota"></div>';
         cadena = cadena + '</div></div>'
 

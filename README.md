@@ -2,7 +2,7 @@
 Proyecto de la asignatura Procesos de Ingeniería del Software curso 22-23
 Escuela Superior de Ingeniería Informática de Albacete - Universidad de Castilla-La Mancha.
 
-La aplicacion desplegada la podemos encontrar en https://proyecto22-ci-4yjkn464wa-ew.a.run.app/
+La aplicacion desplegada la podemos encontrar en https://proyecto22cicd-dlcxminffa-no.a.run.app
 
 ## Descripción
 Este repositorio contiene la arquitectura base de una solución software estilo SaaS (Software as a Service) de una aplicación genérica que implementa la siguiente funcionalidad:

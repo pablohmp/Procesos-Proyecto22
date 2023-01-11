@@ -8,6 +8,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+const passport = require("passport");
+
 const modelo = require("./servidor/modelo.js");
 const sWS = require("./servidor/servidorWS.js");
 
@@ -20,13 +22,49 @@ let juego = new modelo.Juego();
 //Creamos objeto sWS
 let servidorWS = new sWS.ServidorWS();
 
+const cookieSession=require("cookie-session");
+require("./servidor/passport-setup.js");
+
 app.use(express.static(__dirname + "/"));
+
+app.use(cookieSession({
+	name: 'Batalla Naval',
+	keys: ['key1', 'key2']
+  }));
+  
+  app.use(passport.initialize());
+  app.use(passport.session());
 
 app.get("/", function(request,response){
 	var contenido=fs.readFileSync(__dirname+"/cliente/index.html");
 	response.setHeader("Content-type","text/html");
 	response.send(contenido);
 });
+
+app.get("/auth/google",passport.authenticate('google', { scope: ['profile','email'] }));
+
+app.get('/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/fallo' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/good');
+});
+
+app.get("/good", function(request,response){
+  var nick=request.user.emails[0].value;
+  if (nick){
+    juego.agregarUsuario(nick);
+  }
+  response.cookie('nick',nick);
+  response.redirect('/');
+});
+
+app.get("/fallo",function(request,response){
+  response.send({nick:"nook"})
+});
+
+// estrategia local
+//"/auth/twitter"
 
 
 app.get("/comprobarUsuario/:nick", function(request, response){
