@@ -5,6 +5,32 @@ function Cad() {
     this.logs;
     this.usuarios;
 
+    this.conectar = function () {
+        let cad = this;
+        mongo.connect("mongodb+srv://admin:admin@cluster0.ngj1cva.mongodb.net/?retryWrites=true&w=majority", { useUnifiedTopology: true }, function (err, database) {
+            if (!err) {
+                console.log("Conectado a MongoDB Atlas");
+                database.db("batalla").collection("logs", function (err, col) {
+                    if (err) {
+                        console.log("No se puede obtener la coleccion")
+                    }
+                    else {
+                        console.log("tenemos la colección logs");
+                        cad.logs = col;
+                    }
+                });
+
+            } else {
+                console.log("No se pudo conectar con MongoDB Atlas");
+            }
+        });
+    }
+    
+    this.conectar();
+    // this.init = async function(){
+    //     await this.conectar();
+    // }
+
     //logs
     this.insertarLog = function (log, callback) {
         insertar(this.logs, log, callback);
@@ -58,27 +84,8 @@ function Cad() {
         });
     };
 
-    this.conectar = function () {
-        let cad = this;
-        mongo.connect("mongodb+srv://admin:admin@cluster0.ngj1cva.mongodb.net/?retryWrites=true&w=majority", { useUnifiedTopology: true }, function (err, database) {
-            if (!err) {
-                console.log("Conectado a MongoDB Atlas");
-                database.db("batalla").collection("logs", function (err, col) {
-                    if (err) {
-                        console.log("No se puede obtener la coleccion")
-                    }
-                    else {
-                        console.log("tenemos la colección logs");
-                        cad.logs = col;
-                    }
-                });
-
-            } else {
-                console.log("No se pudo conectar con MongoDB Atlas");
-            }
-        });
-    }
-    this.conectar();
+    
+    
 }
 
 module.exports.Cad = Cad;
