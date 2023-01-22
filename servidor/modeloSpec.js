@@ -137,6 +137,21 @@ describe("El juego...", function () {
 				expect(user1.flota["b2"].estado).toEqual("intacto");
 			});
 
+			it("Comprobar que no cambia el turno cuando disparas a escombros", function () {
+				expect(partida.turno).toEqual(user1);
+				expect(user2.flota["b2"].estado).toEqual("intacto");
+				user1.disparar(0, 0);
+				expect(user2.flota["b2"].estado).toEqual("tocado");
+				user1.disparar(0, 0);
+				expect(partida.turno).toEqual(user1);
+			});
+
+			it("Comprobar que el timer cambia de turno", function () {
+				expect(partida.turno).toEqual(user1);
+				partida.forzarTimer();
+				expect(partida.turno).toEqual(user2);
+			});
+
 		});
 	});
 });

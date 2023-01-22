@@ -268,6 +268,9 @@ function Partida(codigo, user) {
 		return false;
 	}
 
+	this.forzarTimer = function (){
+		this.timeLeft = 0;
+	}
 
 
 
