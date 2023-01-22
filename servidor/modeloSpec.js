@@ -5,6 +5,7 @@ describe("El juego...", function () {
 	var user1, user2;
 	beforeEach(function () {
 		miJuego = new modelo.Juego(); 
+		miJuego.test = true;
 		miJuego.agregarUsuario("pepe");
 		miJuego.agregarUsuario("luis");
 		res = miJuego.jugadorCreaPartida("pepe");
@@ -42,21 +43,21 @@ describe("El juego...", function () {
 		});
 
 		//Comprobar que tienen tablero propio y tablero rival
-		it("Comprobar que cada usuario tiene 2 tableros de 5x5", function () {
+		it("Comprobar que cada usuario tiene 2 tableros de 10x10", function () {
 			expect(user1.tableroPropio).toBeDefined();
 			expect(user2.tableroPropio).toBeDefined();
 			expect(user1.tableroRival).toBeDefined();
 			expect(user2.tableroRival).toBeDefined();
 
 
-			expect(user1.tableroPropio.casillas.length).toEqual(5);
-			expect(user2.tableroPropio.casillas.length).toEqual(5);
+			expect(user1.tableroPropio.casillas.length).toEqual(10);
+			expect(user2.tableroPropio.casillas.length).toEqual(10);
 
 			//habría que recorrer las 5 columnas
-			expect(user1.tableroPropio.casillas[0].length).toEqual(5);
-			expect(user1.tableroRival.casillas[0].length).toEqual(5);
-			expect(user2.tableroPropio.casillas[0].length).toEqual(5);
-			expect(user2.tableroRival.casillas[0].length).toEqual(5);
+			expect(user1.tableroPropio.casillas[0].length).toEqual(10);
+			expect(user1.tableroRival.casillas[0].length).toEqual(10);
+			expect(user2.tableroPropio.casillas[0].length).toEqual(10);
+			expect(user2.tableroRival.casillas[0].length).toEqual(10);
 
 			//habría que recorrer todo el tablero
 			//que contienen agua (esAgua())
@@ -141,15 +142,15 @@ describe("El juego...", function () {
 				expect(partida.turno).toEqual(user1);
 				expect(user2.flota["b2"].estado).toEqual("intacto");
 				user1.disparar(0, 0);
+				expect(user2.tableroPropio.casillas[0][0].contiene.esEscombros()).toEqual(true);
 				expect(user2.flota["b2"].estado).toEqual("tocado");
 				user1.disparar(0, 0);
 				expect(partida.turno).toEqual(user1);
 			});
 
-			it("Comprobar que el timer cambia de turno", function () {
+			it("Comprobar que el timer cambia de turno", async function () {
 				expect(partida.turno).toEqual(user1);
-				partida.forzarTimer();
-				expect(partida.turno).toEqual(user2);
+				partida.forzarTimer(() =>expect(setTimeout(() => expect(partida.turno).toEqual(user2), 1000)).toEqual(true));
 			});
 
 		});

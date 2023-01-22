@@ -4,6 +4,7 @@ function Juego() {
 	this.partidas = [];
 	this.usuarios = {};  //array asociativo [clave][objeto]
 	this.cad = new cad.Cad();
+	this.test = false;
 	//this.cad.conectar();
 
 	this.agregarUsuario = function (nick) {
